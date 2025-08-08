@@ -39,13 +39,14 @@ st.markdown(
     body {
         background-color: black;
         color: white;
+        font-family: 'Meiryo', sans-serif;
     }
     .counter {
         font-size: 72px;
         color: white;
         font-weight: bold;
         text-align: center;
-        font-family: 'Courier New', monospace;
+        font-family: 'Meiryo', sans-serif;
         text-shadow: 0 0 10px white;
     }
     .label {
@@ -53,12 +54,14 @@ st.markdown(
         color: white;
         text-align: center;
         margin-bottom: 30px;
+        font-family: 'Meiryo', sans-serif;
     }
     .timestamp {
         font-size: 14px;
         color: gray;
         text-align: center;
         margin-top: 40px;
+        font-family: 'Meiryo', sans-serif;
     }
     .sleep-message {
         font-size: 36px;
@@ -66,11 +69,20 @@ st.markdown(
         font-weight: bold;
         text-align: center;
         margin-top: 40px;
+        font-family: 'Meiryo', sans-serif;
+    }
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
+
+# 更新ボタン
+if st.button('更新'):
+    st.experimental_rerun()  # 更新ボタンが押されたときに再読み込み
 
 # --- 表示 ---
 if count_1min is not None and count_5min is not None:
@@ -84,3 +96,6 @@ else:
     st.markdown('<div class="sleep-message">Sleep</div>', unsafe_allow_html=True)
 
 st.markdown(f'<div class="timestamp">現在時刻（JST）: {now_jst.strftime("%Y-%m-%d %H:%M:%S")}</div>', unsafe_allow_html=True)
+
+# --- 更新ボタン表示位置 ---
+st.markdown('<div class="button-container"></div>', unsafe_allow_html=True)
