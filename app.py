@@ -32,6 +32,19 @@ if count_1min >= 1000 or count_5min >= 200:
 else:
     sleep_message = ""
 
+# --- 状態管理 ---
+if 'count_1min' not in st.session_state:
+    st.session_state.count_1min = count_1min
+if 'count_5min' not in st.session_state:
+    st.session_state.count_5min = count_5min
+
+# --- 更新ボタンの処理 ---
+if st.button('更新'):
+    # 更新ボタンが押されたらカウントをリセット
+    st.session_state.count_1min = 0
+    st.session_state.count_5min = 0
+    st.experimental_rerun()  # ボタンが押されたらページをリロード
+
 # --- デザイン ---
 st.markdown(
     """
@@ -39,14 +52,14 @@ st.markdown(
     body {
         background-color: black;
         color: white;
-        font-family: 'Meiryo', sans-serif;
+        font-family: sans-serif;
     }
     .counter {
         font-size: 72px;
         color: white;
         font-weight: bold;
         text-align: center;
-        font-family: 'Meiryo', sans-serif;
+        font-family: sans-serif;
         text-shadow: 0 0 10px white;
     }
     .label {
@@ -54,14 +67,14 @@ st.markdown(
         color: white;
         text-align: center;
         margin-bottom: 30px;
-        font-family: 'Meiryo', sans-serif;
+        font-family: sans-serif;
     }
     .timestamp {
         font-size: 14px;
         color: gray;
         text-align: center;
         margin-top: 40px;
-        font-family: 'Meiryo', sans-serif;
+        font-family: sans-serif;
     }
     .sleep-message {
         font-size: 36px;
@@ -69,7 +82,7 @@ st.markdown(
         font-weight: bold;
         text-align: center;
         margin-top: 40px;
-        font-family: 'Meiryo', sans-serif;
+        font-family: sans-serif;
     }
     .button-container {
         text-align: center;
@@ -80,16 +93,12 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# 更新ボタン
-if st.button('更新'):
-    st.experimental_rerun()  # 更新ボタンが押されたときに再読み込み
-
 # --- 表示 ---
-if count_1min is not None and count_5min is not None:
-    st.markdown('<div class="counter">{:03d}</div>'.format(count_1min), unsafe_allow_html=True)
+if st.session_state.count_1min is not None and st.session_state.count_5min is not None:
+    st.markdown('<div class="counter">{:03d}</div>'.format(st.session_state.count_1min), unsafe_allow_html=True)
     st.markdown('<div class="label">1分カウント（最大1000）</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="counter">{:03d}</div>'.format(count_5min), unsafe_allow_html=True)
+    st.markdown('<div class="counter">{:03d}</div>'.format(st.session_state.count_5min), unsafe_allow_html=True)
     st.markdown('<div class="label">5分カウント（最大200）</div>', unsafe_allow_html=True)
 
 else:
