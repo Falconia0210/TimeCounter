@@ -62,7 +62,7 @@ st.markdown(
     }
     .sleep-message {
         font-size: 36px;
-        color: #ff0;
+        color: white;
         font-weight: bold;
         text-align: center;
         margin-top: 40px;
