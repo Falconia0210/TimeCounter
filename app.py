@@ -43,7 +43,6 @@ if st.button('更新'):
     # 更新ボタンが押されたらカウントをリセット
     st.session_state.count_1min = 0
     st.session_state.count_5min = 0
-    st.experimental_rerun()  # ボタンが押されたらページをリロード
 
 # --- デザイン ---
 st.markdown(
