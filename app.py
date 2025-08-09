@@ -112,6 +112,5 @@ else:
 
 st.markdown(f'<div class="timestamp">現在時刻（JST）: {now_jst.strftime("%Y-%m-%d %H:%M:%S")}</div>', unsafe_allow_html=True)
 
-# --- 自動更新のために1秒ごとに更新 ---
-time.sleep(1)  # 1秒ごとに自動更新
+# --- 自動更新のために画面を再描画（1秒ごと） ---
 st.experimental_rerun()  # 画面のリフレッシュ
