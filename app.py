@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 from datetime import datetime, timedelta
 import pytz
 
@@ -38,11 +39,8 @@ if 'count_1min' not in st.session_state:
 if 'count_5min' not in st.session_state:
     st.session_state.count_5min = count_5min
 
-# --- 更新ボタンの処理 ---
-if st.button('更新'):
-    # 更新ボタンが押されたらカウントをリセット
-    st.session_state.count_1min = 0
-    st.session_state.count_5min = 0
+# --- 自動更新機能 ---
+st.write("現在、タイマーは自動で更新されます。更新ボタンは必要ありません。")
 
 # --- デザイン ---
 st.markdown(
@@ -107,3 +105,7 @@ st.markdown(f'<div class="timestamp">現在時刻（JST）: {now_jst.strftime("%
 
 # --- 更新ボタン表示位置 ---
 st.markdown('<div class="button-container"></div>', unsafe_allow_html=True)
+
+# --- 自動更新処理（更新間隔 1秒ごとにリフレッシュ） ---
+time.sleep(1)  # 1秒ごとに自動更新
+st.experimental_rerun()
