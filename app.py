@@ -16,8 +16,10 @@ if now_jst < start_time:
 
 # 経過時間（分）
 elapsed_minutes = int((now_jst - start_time).total_seconds() // 60)
-count_1min = min(elapsed_minutes, 1000)
-count_5min = min(elapsed_minutes // 5, 200)
+
+# 1分ごとのカウントは、5:00以降から開始する
+count_1min = min(elapsed_minutes + 1, 1000)  # 5:00から1分カウント開始
+count_5min = min(elapsed_minutes // 5 + 1, 200)  # 5:00から5分カウント開始
 
 # スリープ状態チェック
 if count_1min >= 1000 or count_5min >= 200:
@@ -109,3 +111,7 @@ else:
     st.markdown('<div class="sleep-message">Sleep</div>', unsafe_allow_html=True)
 
 st.markdown(f'<div class="timestamp">現在時刻（JST）: {now_jst.strftime("%Y-%m-%d %H:%M:%S")}</div>', unsafe_allow_html=True)
+
+# --- 自動更新のために1秒ごとに更新 ---
+time.sleep(1)  # 1秒ごとに自動更新
+st.experimental_rerun()  # 画面のリフレッシュ
