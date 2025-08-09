@@ -40,7 +40,11 @@ if 'count_5min' not in st.session_state:
     st.session_state.count_5min = count_5min
 
 # --- 自動更新機能 ---
-st.write("現在、タイマーは自動で更新されます。更新ボタンは必要ありません。")
+# 自動でカウントを更新し続けるためにセッション状態を更新
+if sleep_message == "":
+    st.session_state.count_1min += 1
+    if st.session_state.count_1min % 5 == 0:
+        st.session_state.count_5min += 1
 
 # --- デザイン ---
 st.markdown(
@@ -103,9 +107,6 @@ else:
 
 st.markdown(f'<div class="timestamp">現在時刻（JST）: {now_jst.strftime("%Y-%m-%d %H:%M:%S")}</div>', unsafe_allow_html=True)
 
-# --- 更新ボタン表示位置 ---
-st.markdown('<div class="button-container"></div>', unsafe_allow_html=True)
-
-# --- 自動更新処理（更新間隔 1秒ごとにリフレッシュ） ---
+# --- 更新処理 ---
 time.sleep(1)  # 1秒ごとに自動更新
-st.experimental_rerun()
+
