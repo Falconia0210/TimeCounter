@@ -94,3 +94,23 @@ st.markdown(
         margin-top: 20px;
     }
     </style>
+    """, unsafe_allow_html=True
+)
+
+# --- 表示 ---
+if st.session_state.count_1min is not None and st.session_state.count_5min is not None:
+    st.markdown('<div class="counter">{:03d}</div>'.format(st.session_state.count_1min), unsafe_allow_html=True)
+    st.markdown('<div class="label">1分カウント（最大1000）</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="counter">{:03d}</div>'.format(st.session_state.count_5min), unsafe_allow_html=True)
+    st.markdown('<div class="label">5分カウント（最大200）</div>', unsafe_allow_html=True)
+
+else:
+    st.markdown('<div class="sleep-message">Sleep</div>', unsafe_allow_html=True)
+
+st.markdown(f'<div class="timestamp">現在時刻（JST）: {now_jst.strftime("%Y-%m-%d %H:%M:%S")}</div>', unsafe_allow_html=True)
+
+# --- 1秒ごとにページがリフレッシュされることを防ぐ ---
+# 次の更新をスケジュールする（画面を更新しても無限ループしないようにする）
+if now_jst.second == 0:
+    st.experimental_rerun()  # 画面のリフレッシュ
