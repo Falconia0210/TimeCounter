@@ -18,9 +18,13 @@ if now_jst < start_time:
 if 'last_updated' not in st.session_state:
     st.session_state.last_updated = now_jst
 if 'count_1min' not in st.session_state:
-    st.session_state.count_1min = 1
+    # 起動時のカウントをルールに従って計算
+    elapsed_minutes = int((now_jst - start_time).total_seconds() // 60)
+    st.session_state.count_1min = min(elapsed_minutes + 1, 1000)  # 1分カウント
 if 'count_5min' not in st.session_state:
-    st.session_state.count_5min = 1
+    # 5分単位のカウントを計算
+    elapsed_minutes = int((now_jst - start_time).total_seconds() // 60)
+    st.session_state.count_5min = min(elapsed_minutes // 5 + 1, 200)  # 5分カウント
 
 # --- 更新処理（ボタンを押した時間を基準にカウント進行） ---
 def update_counts():
@@ -34,7 +38,7 @@ def update_counts():
     st.session_state.last_updated = now_jst  # 更新時刻を記録
 
 # --- 更新ボタン ---
-if st.button('更新'):
+if st.button('Sync'):
     update_counts()
 
 # --- スリープ状態チェック ---
