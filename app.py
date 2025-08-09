@@ -1,5 +1,4 @@
 import streamlit as st
-import time
 from datetime import datetime, timedelta
 import pytz
 
@@ -38,13 +37,17 @@ if 'count_1min' not in st.session_state:
     st.session_state.count_1min = count_1min
 if 'count_5min' not in st.session_state:
     st.session_state.count_5min = count_5min
+if 'last_updated' not in st.session_state:
+    st.session_state.last_updated = now_jst
 
-# --- 自動更新機能 ---
-# 自動でカウントを更新し続けるためにセッション状態を更新
-if sleep_message == "":
-    st.session_state.count_1min += 1
-    if st.session_state.count_1min % 5 == 0:
-        st.session_state.count_5min += 1
+# --- 毎分00秒で更新処理 ---
+if now_jst.minute == 0 and now_jst.second == 0:
+    # 1分ごとにカウントを進める
+    if st.session_state.last_updated.minute != now_jst.minute:
+        st.session_state.count_1min += 1
+        if st.session_state.count_1min % 5 == 0:
+            st.session_state.count_5min += 1
+        st.session_state.last_updated = now_jst  # 更新時刻を記録
 
 # --- デザイン ---
 st.markdown(
@@ -106,7 +109,3 @@ else:
     st.markdown('<div class="sleep-message">Sleep</div>', unsafe_allow_html=True)
 
 st.markdown(f'<div class="timestamp">現在時刻（JST）: {now_jst.strftime("%Y-%m-%d %H:%M:%S")}</div>', unsafe_allow_html=True)
-
-# --- 更新処理 ---
-time.sleep(1)  # 1秒ごとに自動更新
-
